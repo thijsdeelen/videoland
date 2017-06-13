@@ -1,7 +1,7 @@
 {
   "name": "videoserver",
   "version": "1.0.0",
-  "description": "Geweldige applicatie minimaal een 11 verdiend.",
+  "description": "Geweldige applicatie die minimaal een 11 verdiend.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
