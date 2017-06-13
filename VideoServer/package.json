@@ -1,23 +1,15 @@
 {
-  "name": "videoland",
+  "name": "videoserver",
   "version": "1.0.0",
-  "description": "Description is te vinden op https://github.com/thijsdeelen/videoland.",
-  "author": "Bram van de Griend",
+  "description": "Geweldige applicatie minimaal een 11 verdiend.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thijsdeelen/videoland.git"
-  },
+  "author": "Thijs Deelen & Bram van de Griend",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/thijsdeelen/videoland/issues"
-  },
-  "homepage": "https://github.com/thijsdeelen/videoland#readme",
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "^4.15.3"
   }
 }
