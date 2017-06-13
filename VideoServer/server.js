@@ -1,13 +1,15 @@
 // Initializeren.
-var http = require('http');
-var express = require('express');
-var app = express();
+var http = require('http')
+var express = require('express')
+var app = express()
 
 // Objecten.
 var exampleObject = {
 	greeting: "Hello world!",
 	farewell: "Goodbye world..."
 }
+
+app.set('port', (process.env.PORT || 5000))
 
 // Gets.
 app.get('/', function(request, response) {
