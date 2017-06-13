@@ -2,16 +2,16 @@
   "name": "videoland",
   "version": "1.0.0",
   "description": "Description is te vinden op https://github.com/thijsdeelen/videoland.",
-  "author": "Bram van de Griend & Thijs Deelen.",
+  "author": "Bram van de Griend",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit"
+    "test": "echo \"Error: no test specified\" && exit",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thijsdeelen/videoland.git"
   },
-  "author": "Bram van de Griend",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/thijsdeelen/videoland/issues"
