@@ -1,1 +1,1 @@
-web: node videoserver/server.js
+web: node VideoServer/server.js
