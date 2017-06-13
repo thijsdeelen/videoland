@@ -25,8 +25,8 @@ app.all('*', function(request, response) {
 	response.send("[Failed] - Item niet gevonden.");
 })
 
-// Launch bericht.
-var port = process.env.PORT || 3000;
-app.listen(port, function() {
-	console.log("[Success] - Server app is listening on port " + port + ".");
+
+// Spin up the server
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
 })
