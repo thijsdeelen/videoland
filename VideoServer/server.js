@@ -1,6 +1,8 @@
 // Initializeren.
 //var http = require('http')
 var express = require('express')
+var bodyParser = require('body-parser')
+var request = require('request')
 var app = express()
 
 // Objecten.
@@ -8,6 +10,12 @@ var exampleObject = {
 	greeting: "Hello world!",
 	farewell: "Goodbye world..."
 }
+
+// Process application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}))
+
+// Process application/json
+app.use(bodyParser.json())
 
 app.set('port', (process.env.PORT || 5000))
 
