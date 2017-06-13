@@ -1,0 +1,7 @@
+Open CMD:
+
+cd C:\xampp\mysql\bin\
+mysql.exe -h 146.185.130.82 -u [USER] -p 
+[USER] = 1013
+
+Vanuit hier kan je de database aanpassen.
