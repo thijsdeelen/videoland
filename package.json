@@ -1,0 +1,15 @@
+{
+  "name": "videoserver",
+  "version": "1.0.0",
+  "description": "Geweldige applicatie minimaal een 11 verdiend.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node videoserver/server.js"
+  },
+  "author": "Thijs Deelen & Bram van de Griend",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
