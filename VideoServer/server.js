@@ -22,7 +22,7 @@ connection.connect(function(err) {
 
 
 // Objecten.
-var exampleObject = 
+var exampleObject =
 {
 	greeting: "Hello world!",
 	farewell: "Goodbye world..."
@@ -54,12 +54,14 @@ app.get('/about', function(request, response) {
 	response.send("[Success] - Dit is een webserver voor de toets van Programmeren 4. Gemaakt door Bram van de Griend en Thijs Deelen.")
 })
 
+app.use('/api', require('./api/crud.js'));
+
 // 404 response.
 app.all('*', function(request, response) {
 	response.status(404);
 	response.send("[Failed] - Item niet gevonden.");
 })
-	
+
 
 
 // Start server.
