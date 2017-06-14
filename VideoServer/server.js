@@ -1,15 +1,31 @@
 // Initializeren.
-//var http = require('http')
 var express = require('express')
 var app = express()
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host: "146.185.130.82",
+  user: "1013",
+  password: process.env.DB_PASSWORD,
+  database: "1013"
+});
+
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("[Success] - Connected to database.");
+});
+
+
 
 // Objecten.
-var exampleObject = {
+var exampleObject = 
+{
 	greeting: "Hello world!",
 	farewell: "Goodbye world..."
 }
 
-app.set('port', (process.env.PORT || 5000))
+// Port.
+app.set("port", (process.env.PORT || 5000))
 
 // Gets.
 app.get('/', function(request, response) {
@@ -25,8 +41,7 @@ app.all('*', function(request, response) {
 	response.send("[Failed] - Item niet gevonden.");
 })
 
-
-// Spin up the server
+// Start server.
 app.listen(app.get('port'), function() {
-    console.log('running on port', app.get('port'))
+    console.log("[Success] - Running on port " + app.get('port') + ".")
 })
