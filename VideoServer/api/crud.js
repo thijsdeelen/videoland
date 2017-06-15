@@ -37,11 +37,20 @@ routes.get('/read', function(request, response){
 });
 
 routes.get('/film/:id', function(request, response){
-	var query = "SELECT * FROM film WHERE film_id = " + request.params.id;
+	var query = "SELECT film.film_id, film.title, rental.rental_id, rental.rental_date, rental.return_date, rental.inventory_id, rental.customer_id FROM film INNER JOIN inventory ON film.film_id = inventory.film_id INNER JOIN rental ON inventory.inventory_id = rental.inventory_id WHERE film.film_id = " + request.params.id;
 	connection.query(query, function(err, results, fields)
 	{
 		if (err) throw err;
-		console.log("[READ] - film via ID opgevraagd");
+		
+		if (results == "")
+		{
+			console.log("[READ] - The film with this ID has no rentals.");
+			results = "[FAILED] - De film met id (" + request.params.id + ") heeft geen rentals.";
+		} 
+		else
+		{
+			console.log("[READ] - Film with rentals selected on id.");
+		}
 		response.send(results);
 	});
 });
