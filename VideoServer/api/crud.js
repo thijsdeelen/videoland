@@ -36,6 +36,16 @@ routes.get('/read', function(request, response){
     });
 });
 
+routes.get('/film/:id', function(request, response){
+	var query = "SELECT * FROM film WHERE film_id = " + request.params.id;
+	connection.query(query, function(err, results, fields)
+	{
+		if (err) throw err;
+		console.log("[READ] - film via ID opgevraagd");
+		response.send(results);
+	});
+});
+
 routes.get('/update', function(request, response){
 	var query = "UPDATE film SET title = 'Docu-Docu van de coole Avans school' WHERE title LIKE '%Avans%'";
 	connection.query(query, function (err, results, fields) {
