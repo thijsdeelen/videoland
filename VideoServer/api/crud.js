@@ -81,19 +81,19 @@ routes.get('/rentals/:id', function(request, response){
 //gebruiker van het exemplaar met
 //gegeven inventoryid.
 routes.post('/rentals/:userid/:inventoryid', function(request, response){
-	var query = "" + request.params.userid +  request.params.inventoryid;
+	var query = "INSERT INTO rental VALUES ('', CURRENT_DATE, '" + request.params.userid + "', '" + request.params.inventoryid + "', NOW() + INTERVAL 7 DAY, '', '')";
 	connection.query(query, function(err, results, fields)
 	{
 		if (err) throw err;
 
 		if (results == "")
 		{
-			console.log("[CREATE] - Something went wrong. Please try again.")
-			results = "[FAILED] - Er zijn geen nieuwe films uitgeleent.";
+			console.log("[FAILED] - Kon geen nieuwe rental aanmaken.")
+			results = "[FAILED] - Kon geen nieuwe rental aanmaken.";
 		}
 		else
 		{
-			console.log("[READ] - Rentals shown for customer with selected id.")
+			console.log("[READ] - Rental created.")
 		}
 
 		response.send(results);
@@ -104,19 +104,19 @@ routes.post('/rentals/:userid/:inventoryid', function(request, response){
 //gebruiker van het exemplaar met
 //gegeven inventoryid.
 routes.put('/rentals/:userid/:inventoryid', function(request, response){
-	var query = "" + request.params.userid +  request.params.inventoryid;
+	var query = "UPDATE rental SET customer_id = " + request.params.userid + " WHERE inventory_id = " + request.params.inventoryid;
 	connection.query(query, function(err, results, fields)
 	{
 		if (err) throw err;
 
 		if (results == "")
 		{
-			console.log("[UPDATE] - Something went wrong. Please try again.")
-			results = "[FAILED] - Er zijn geen nieuwe films uitgeleent.";
+			console.log("[FAILED] - Couldn't edit rental.")
+			results = "[FAILED] - Couldn't edit rental.";
 		}
 		else
 		{
-			console.log("[READ] - Rentals shown for customer with selected id.")
+			console.log("[UPDATE] - Rental userid edited.")
 		}
 
 		response.send(results);
@@ -127,19 +127,19 @@ routes.put('/rentals/:userid/:inventoryid', function(request, response){
 //gegeven gebruiker van het exemplaar
 //met gegeven inventoryid.
 routes.delete('/rentals/:userid/:inventoryid', function(request, response){
-	var query = "" + request.params.userid +  request.params.inventoryid;
+	var query = "DELETE FROM rental where customer_id = "+ request.params.userid + " AND inventory_id = " + request.params.inventoryid;
 	connection.query(query, function(err, results, fields)
 	{
 		if (err) throw err;
 
 		if (results == "")
 		{
-			console.log("[DELETE] - Something went wrong. Please try again.")
-			results = "[FAILED] - Er zijn geen nieuwe films uitgeleent.";
+			console.log("[FAILED] - Delete failed.")
+			results = "[FAILED] - Delete failed.";
 		}
 		else
 		{
-			console.log("[READ] - Rentals shown for customer with selected id.")
+			console.log("[DELETE] - Delete successful based on customer_id and inventory_id.")
 		}
 
 		response.send(results);
