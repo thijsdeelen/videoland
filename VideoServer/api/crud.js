@@ -55,8 +55,9 @@ routes.get('/films/:id', function(request, response){
 	});
 });
 
-routes.get('/rentals/:userid', function(request, response){
-	var query = "SELECT * FROM film";
+// Films ophalen die gehuurd zijn door specifiek user ID.
+routes.get('/rentals/:id', function(request, response){
+	var query = "SELECT film.film_id, film.title, film.description, film.release_year FROM film INNER JOIN inventory ON film.film_id = inventory.film_id INNER JOIN rental ON inventory.inventory_id = rental.inventory_id INNER JOIN customer ON rental.customer_id = customer.customer_id WHERE customer.customer_id = " + request.params.id;
 	connection.query(query, function(err, results, fields)
 	{
 		if (err) throw err;
@@ -68,8 +69,10 @@ routes.get('/rentals/:userid', function(request, response){
 		}
 		else
 		{
-			console.log("[READ] - Rentales shown for customer with selected id.")
+			console.log("[READ] - Rentals shown for customer with selected id.")
 		}
+
+
 		response.send(results);
 	});
 });
