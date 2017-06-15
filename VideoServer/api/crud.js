@@ -72,10 +72,80 @@ routes.get('/rentals/:id', function(request, response){
 			console.log("[READ] - Rentals shown for customer with selected id.")
 		}
 
+		response.send(results);
+	});
+});
+
+
+//Maakt een nieuwe uitlening voor de gegeven
+//gebruiker van het exemplaar met
+//gegeven inventoryid.
+routes.post('/rentals/:userid/:inventoryid', function(request, response){
+	var query = "" + request.params.userid +  request.params.inventoryid;
+	connection.query(query, function(err, results, fields)
+	{
+		if (err) throw err;
+
+		if (results == "")
+		{
+			console.log("[CREATE] - Something went wrong. Please try again.")
+			results = "[FAILED] - Er zijn geen nieuwe films uitgeleent.";
+		}
+		else
+		{
+			console.log("[READ] - Rentals shown for customer with selected id.")
+		}
 
 		response.send(results);
 	});
 });
+
+//Wijzig bestaande uitlening voor de gegeven
+//gebruiker van het exemplaar met
+//gegeven inventoryid.
+routes.put('/rentals/:userid/:inventoryid', function(request, response){
+	var query = "" + request.params.userid +  request.params.inventoryid;
+	connection.query(query, function(err, results, fields)
+	{
+		if (err) throw err;
+
+		if (results == "")
+		{
+			console.log("[UPDATE] - Something went wrong. Please try again.")
+			results = "[FAILED] - Er zijn geen nieuwe films uitgeleent.";
+		}
+		else
+		{
+			console.log("[READ] - Rentals shown for customer with selected id.")
+		}
+
+		response.send(results);
+	});
+});
+
+//Verwijder bestaande uitlening voor de
+//gegeven gebruiker van het exemplaar
+//met gegeven inventoryid.
+routes.delete('/rentals/:userid/:inventoryid', function(request, response){
+	var query = "" + request.params.userid +  request.params.inventoryid;
+	connection.query(query, function(err, results, fields)
+	{
+		if (err) throw err;
+
+		if (results == "")
+		{
+			console.log("[DELETE] - Something went wrong. Please try again.")
+			results = "[FAILED] - Er zijn geen nieuwe films uitgeleent.";
+		}
+		else
+		{
+			console.log("[READ] - Rentals shown for customer with selected id.")
+		}
+
+		response.send(results);
+	});
+});
+
 
 routes.get('/update', function(request, response){
 	var query = "UPDATE film SET title = 'Docu-Docu van de coole Avans school' WHERE title LIKE '%Avans%'";
