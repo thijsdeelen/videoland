@@ -1,10 +1,11 @@
 // Initializeren.
-var http = require('http');
-var express = require('express');
-var dateTime = require('node-datetime');
-var app = express();
+var http 		= require('http');
+var express 	= require('express');
+var dateTime 	= require('node-datetime');
 
-// Port.
+var app 		= express();
+
+// Variables.
 app.set("port", (process.env.PORT || 5000))
 
 // Display all requests.

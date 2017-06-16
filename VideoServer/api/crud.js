@@ -1,10 +1,11 @@
-var express = require('express');
-var path = require('path');
-var routes = express.Router();
+var express 	= require('express');
+var path 		= require('path');
+var router 		= express.Router();
+var jwt 		= require('jsonwebtoken');
+var authenticator = require('./authenticator.js');
+var mysql 		= require('mysql');
 
-// SQL!
-var mysql = require('mysql');
-
+// Connector.
 var connection = mysql.createConnection({
   host: "146.185.130.82",
   user: "1013",
@@ -17,8 +18,12 @@ connection.connect(function(err) {
   console.log("[Success] - Connected to database.");
 });
 
+// Get a token.
+router.get('/authenticate', authenticator.authenticate);
+
+
 // CRUD!
-routes.get('/create', function(request, response){
+router.get('/create', function(request, response){
 	var query = "INSERT INTO `film` VALUES (NULL, 'Documentaire Avans Hogeschool', 'Een docu over Avans Hogeschool.', '2017', '', NULL, '3', '4.99', '56', '19.99', 'G', NULL, CURRENT_TIMESTAMP)";
 	connection.query(query, function (err, results, fields) {
         if (err) throw err;
@@ -27,7 +32,7 @@ routes.get('/create', function(request, response){
     });
 });
 
-routes.get('/read', function(request, response){
+router.get('/read', function(request, response){
 	var query = "SELECT * FROM film WHERE title LIKE '%Avans%' LIMIT 10";
 	connection.query(query, function (err, results, fields) {
         if (err) throw err;
@@ -36,7 +41,7 @@ routes.get('/read', function(request, response){
     });
 });
 
-routes.get('/films/:id', function(request, response){
+router.get('/films/:id', function(request, response){
 	var query = "SELECT film.film_id, film.title, rental.rental_id, rental.rental_date, rental.return_date, rental.inventory_id, rental.customer_id FROM film INNER JOIN inventory ON film.film_id = inventory.film_id INNER JOIN rental ON inventory.inventory_id = rental.inventory_id WHERE film.film_id = " + request.params.id;
 	connection.query(query, function(err, results, fields)
 	{
@@ -56,7 +61,7 @@ routes.get('/films/:id', function(request, response){
 });
 
 // Films ophalen die gehuurd zijn door specifiek user ID.
-routes.get('/rentals/:id', function(request, response){
+router.get('/rentals/:id', function(request, response){
 	var query = "SELECT film.film_id, film.title, film.description, film.release_year FROM film INNER JOIN inventory ON film.film_id = inventory.film_id INNER JOIN rental ON inventory.inventory_id = rental.inventory_id INNER JOIN customer ON rental.customer_id = customer.customer_id WHERE customer.customer_id = " + request.params.id;
 	connection.query(query, function(err, results, fields)
 	{
@@ -80,7 +85,7 @@ routes.get('/rentals/:id', function(request, response){
 //Maakt een nieuwe uitlening voor de gegeven
 //gebruiker van het exemplaar met
 //gegeven inventoryid.
-routes.post('/rentals/:userid/:inventoryid', function(request, response){
+router.post('/rentals/:userid/:inventoryid', function(request, response){
 	var query = "INSERT INTO rental VALUES ('', CURRENT_DATE, '" + request.params.userid + "', '" + request.params.inventoryid + "', NOW() + INTERVAL 7 DAY, '', '')";
 	connection.query(query, function(err, results, fields)
 	{
@@ -103,7 +108,7 @@ routes.post('/rentals/:userid/:inventoryid', function(request, response){
 //Wijzig bestaande uitlening voor de gegeven
 //gebruiker van het exemplaar met
 //gegeven inventoryid.
-routes.put('/rentals/:userid/:inventoryid', function(request, response){
+router.put('/rentals/:userid/:inventoryid', function(request, response){
 	var query = "UPDATE rental SET customer_id = " + request.params.userid + " WHERE inventory_id = " + request.params.inventoryid;
 	connection.query(query, function(err, results, fields)
 	{
@@ -126,7 +131,7 @@ routes.put('/rentals/:userid/:inventoryid', function(request, response){
 //Verwijder bestaande uitlening voor de
 //gegeven gebruiker van het exemplaar
 //met gegeven inventoryid.
-routes.delete('/rentals/:userid/:inventoryid', function(request, response){
+router.delete('/rentals/:userid/:inventoryid', function(request, response){
 	var query = "DELETE FROM rental where customer_id = "+ request.params.userid + " AND inventory_id = " + request.params.inventoryid;
 	connection.query(query, function(err, results, fields)
 	{
@@ -147,7 +152,7 @@ routes.delete('/rentals/:userid/:inventoryid', function(request, response){
 });
 
 
-routes.get('/update', function(request, response){
+router.get('/update', function(request, response){
 	var query = "UPDATE film SET title = 'Docu-Docu van de coole Avans school' WHERE title LIKE '%Avans%'";
 	connection.query(query, function (err, results, fields) {
         if (err) throw err;
@@ -156,7 +161,7 @@ routes.get('/update', function(request, response){
     });
 });
 
-routes.get('/delete', function(request, response){
+router.get('/delete', function(request, response){
 	var query = "DELETE FROM film WHERE title LIKE '%Avans%'";
 	connection.query(query, function (err, results, fields) {
         if (err) throw err;
@@ -166,4 +171,4 @@ routes.get('/delete', function(request, response){
 });
 
 // End.
-module.exports = routes;
+module.exports = router;
