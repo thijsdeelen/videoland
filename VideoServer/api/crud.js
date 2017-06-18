@@ -1,24 +1,12 @@
-var express 	= require('express');
-var path 		= require('path');
-var router 		= express.Router();
-var jwt 		= require('jsonwebtoken');
-var authenticator = require('./authenticator.js');
-var mysql 		= require('mysql');
+// In dit bestand worden database acties uitgevoerd.
+var express 		= require('express');
+var path 			= require('path');
+var router 			= express.Router();
+var jwt 			= require('jsonwebtoken');
+var authenticator 	= require('./authenticator.js');
+var connection 		= require('../config/connector.js');
 
-// Connector.
-var connection = mysql.createConnection({
-  host: "146.185.130.82",
-  user: "1013",
-  password: process.env.DB_PASSWORD,
-  database: "1013"
-});
-
-connection.connect(function(err) {
-  if (err) throw err;
-  console.log("[Success] - Connected to database.");
-});
-
-// Get a token.
+// Token ophalen.
 router.get('/authenticate', authenticator.authenticate);
 
 
@@ -170,5 +158,5 @@ router.get('/delete', function(request, response){
     });
 });
 
-// End.
+// Export.
 module.exports = router;

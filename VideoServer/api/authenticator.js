@@ -1,6 +1,6 @@
 var jwt		= require('jsonwebtoken');
 
-module.exports.authenticate = function(request, response){
+function authenticate(request, response){
 	var user = {
 		username: 'test',
 		email: 'test@test.com'
@@ -17,3 +17,7 @@ module.exports.authenticate = function(request, response){
 
 	console.log("[TOKEN] - Token obtained!")
 }
+
+module.exports = {
+    authenticate
+};
