@@ -1,10 +1,10 @@
-// Inloggen.
+// Hier worden account functies uitgeoefend. LET OP: [GEEN HASHING].
 var express         = require('express');
 var router          = express.Router();
 var connection      = require('../config/connector.js');
 var auth            = require('../config/authenticator.js');
 
-// Vanaf deze path wordt je opgegeven username en password gecontrolleerd in de database. LET OP: [GEEN HASHING].
+// Login met username en password.
 router.post('/login', function(request, response) {
 
     // Username en password moeten uit de body worden gehaald.
@@ -36,6 +36,30 @@ router.post('/login', function(request, response) {
         {
             console.log("[FOUTE LOGIN, GEEN TOKEN]")
             response.status(401).json({ "error": "Inlog gegevens kloppen niet." })
+        }
+    });
+
+});
+
+// Registreren met username en password.
+router.post('/register', function(request, response) {
+
+    // Username en password moeten uit de body worden gehaald.
+    var username = request.body.username;
+    var password = request.body.password;
+
+    // Nieuwe user toevoegen.
+    var query = "INSERT INTO customer VALUES (NULL, '1', '" + username + "', 'Automatische Achternaam', 'auto-email@test.com', '1', '1', '', NOW(), '" + password + "')";
+    connection.query(query, function (err, results, fields) 
+    {
+        if (err)
+        {
+            response.send(err);
+        }
+    
+        else
+        {
+            response.send("[SUCCESS] - Gebruiker aangemaakt!");
         }
     });
 
