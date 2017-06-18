@@ -3,9 +3,16 @@ var http 		= require('http');
 var express 	= require('express');
 var dateTime 	= require('node-datetime');
 var jwt 		= require('express-jwt');
+var bodyParser 	= require('body-parser');
 var app 		= express();
 
 module.exports = {};
+
+// Bodyparsing details.
+app.use(bodyParser.urlencoded({ 'extended': 'true' }));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+
 
 // JWT nodig behalve op gespecifeerde routes.
 app.use(jwt({
@@ -35,6 +42,8 @@ app.get('/about', function(request, response) {
 	response.send("[Success] - Dit is een webserver voor de toets van Programmeren 4. Gemaakt door Bram van de Griend en Thijs Deelen.")
 })
 
+// Routes naar de verdere endpoints.
+app.use('/api', require('./api/login.js'));
 app.use('/api', require('./api/crud.js'));
 
 // 404 response.
