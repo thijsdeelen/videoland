@@ -1,14 +1,9 @@
 // In dit bestand worden database acties uitgevoerd.
 var express 		= require('express');
-var path 			= require('path');
 var router 			= express.Router();
 var jwt 			= require('jsonwebtoken');
-var authenticator 	= require('./authenticator.js');
 var connection 		= require('../config/connector.js');
-
-// Token ophalen.
-router.get('/authenticate', authenticator.authenticate);
-
+var authenticator 	= require('../config/authenticator.js');
 
 // CRUD!
 router.get('/create', function(request, response){
@@ -58,7 +53,7 @@ router.get('/rentals/:id', function(request, response){
 		if (results == "")
 		{
 			console.log("[READ] - The customer doesn't rent any movies at this time.")
-			results = "[FAILED] - U heeft nog geen films geleent.";
+			results = "[FAILED] - U heeft nog geen films geleend.";
 		}
 		else
 		{
