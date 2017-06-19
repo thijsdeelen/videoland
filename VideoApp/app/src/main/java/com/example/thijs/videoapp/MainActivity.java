@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Context context = getApplicationContext();
                         SharedPreferences sharedPref = context.getSharedPreferences(
-                                "LINK NAAR FILE", Context.MODE_PRIVATE);
+                                "com.example.thijs.videoapp.SHARED_PREFS_FILE", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("saved_token", token);
                         editor.commit();
