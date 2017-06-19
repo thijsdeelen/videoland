@@ -19,7 +19,6 @@ router.post('/login', function(request, response) {
 
 
         // Kijk of de gegevens matchen. Zo ja, dan token genereren en terugsturen.
-        try{
         if (password == results[0].password)
         {
             console.log("[SUCCESFUL LOGIN]")
@@ -31,13 +30,15 @@ router.post('/login', function(request, response) {
             });
 
             console.log("[TOKEN RECEIVED]")
-        }}
-        catch(err)
+        }
+
+        else
         {
-          console.log("[FOUTE LOGIN, GEEN TOKEN]")
-          response.status(401).json({ "error": "Inlog gegevens kloppen niet." })
+            console.log("[FOUTE LOGIN, GEEN TOKEN]")
+            response.status(401).json({ "error": "Inlog gegevens kloppen niet." })
         }
     });
+
 });
 
 // Registreren met username en password.
