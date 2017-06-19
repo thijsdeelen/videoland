@@ -26,16 +26,16 @@
         android:id="@+id/editTextPassword" />
 
     <Button
+        android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/buttonRegister" />
+        android:text="Login" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/buttonLogin" />
+        android:text="Register"
+        android:id="@+id/buttonRegister" />
 
     <Button
         android:layout_width="match_parent"

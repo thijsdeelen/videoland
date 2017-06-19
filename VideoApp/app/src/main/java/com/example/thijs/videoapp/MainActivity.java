@@ -93,10 +93,16 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // De token zal alleen gevuld zijn als er eerst ingelogd is.
-                if (token != null)
+                // Shared preferences openenen
+                Context context = getApplicationContext();
+                SharedPreferences sharedPref = context.getSharedPreferences("com.example.thijs.videoapp.SHARED_PREFS_FILE", Context.MODE_PRIVATE);
+
+                // De opgeslagen token van de user, opgehaald uit de shared preferences.
+                final String savedtoken = sharedPref.getString("saved_token", "user token");
+
+                if (savedtoken != null)
                 {
-                    displayMessage(token);
+                    displayMessage(savedtoken);
                 }
 
                 else
@@ -166,6 +172,20 @@ public class MainActivity extends AppCompatActivity
                             JSONObject newToken = new JSONObject(response);
                             token = newToken.getString("token");
 
+                            displayMessage("Succesvol ingelogd");
+
+                            Context context = getApplicationContext();
+                            SharedPreferences sharedPref = context.getSharedPreferences(
+                                    "com.example.thijs.videoapp.SHARED_PREFS_FILE", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("saved_token", token);
+                            editor.commit();
+
+                            // Bevestig dat token is opgeslagen
+                            displayMessage("token is opgeslagen");
+
+
+
                             /*
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
@@ -180,8 +200,6 @@ public class MainActivity extends AppCompatActivity
                             e.printStackTrace();
                             displayMessage(e.toString());
                         }
-
-                        displayMessage("[Ingelogd] - Token ontvangen! " + token);
                     }
                 },
 
