@@ -13,26 +13,26 @@ router.post('/login', function(request, response) {
 
     // In de database wordt gecontrolleerd of de username bestaat, en deze returned in 'results' object.
     var query = "SELECT * FROM customer WHERE first_name = '" + username + "'";
-    connection.query(query, function (err, results, fields) 
+    connection.query(query, function (err, results, fields)
     {
         if (err) throw err;
-    
+
 
         // Kijk of de gegevens matchen. Zo ja, dan token genereren en terugsturen.
-        if (password == results[0].password) 
+        if (password == results[0].password)
         {
             console.log("[SUCCESFUL LOGIN]")
 
             // Hier krijg je een gegenereerde token op basis van je username en password.
             var token = auth.encodeToken(username, password);
             response.status(200).json({
-                "token": token, 
+                "token": token,
             });
 
             console.log("[TOKEN RECEIVED]")
-        } 
+        }
 
-        else 
+        else
         {
             console.log("[FOUTE LOGIN, GEEN TOKEN]")
             response.status(401).json({ "error": "Inlog gegevens kloppen niet." })
@@ -50,13 +50,13 @@ router.post('/register', function(request, response) {
 
     // Nieuwe user toevoegen.
     var query = "INSERT INTO customer VALUES (NULL, '1', '" + username + "', 'Automatische Achternaam', 'auto-email@test.com', '1', '1', '', NOW(), '" + password + "')";
-    connection.query(query, function (err, results, fields) 
+    connection.query(query, function (err, results, fields)
     {
         if (err)
         {
             response.send(err);
         }
-    
+
         else
         {
             response.send("[SUCCESS] - Gebruiker aangemaakt!");
