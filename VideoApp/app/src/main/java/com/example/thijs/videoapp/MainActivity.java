@@ -27,159 +27,228 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-
+// 'Main'.
+public class MainActivity extends AppCompatActivity
+{
+    // Login en registeren links van de webserver.
     private static final String REGISTER_URL = "https://videoland.herokuapp.com/api/register";
     private static final String LOGIN_URL = "https://videoland.herokuapp.com/api/login";
 
+    // Deze keywords worden gebruikt voor de HASHMAP.
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
 
+    // Token alvast declareren.
+    public String token;
+
+    // UI dingen.
     private EditText editTextUsername;
     private EditText editTextPassword;
 
-    private String mUsername;
-    private String mPassword;
-
     private Button buttonRegister;
     private Button buttonLogin;
+    private Button buttonToken;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // UI items instellen.
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonToken = (Button) findViewById(R.id.buttonToken);
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+
+
+        // Registreren.
+        buttonRegister.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                mUsername = editTextUsername.getText().toString();
-                mPassword = editTextPassword.getText().toString();
-
-                handleLogin(mUsername, mPassword);
-            }
-            });
-
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
+            public void onClick(View v)
+            {
+                // Krijgt wederom teksten mee uit de velden.
+                registerUser(editTextUsername.getText().toString().trim(), editTextPassword.getText().toString().trim());
             }
         });
-        }
 
-    private void registerUser(){
-        final String username = editTextUsername.getText().toString().trim();
-        final String password = editTextPassword.getText().toString().trim();
+        // Login.
+        buttonLogin.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Krijgt de teksten mee uit de velden.
+                handleLogin(editTextUsername.getText().toString(), editTextPassword.getText().toString());
+            }
+        });
+
+        // Token weergeven.
+        buttonToken.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // De token zal alleen gevuld zijn als er eerst ingelogd is.
+                if (token != null)
+                {
+                    displayMessage(token);
+                }
+
+                else
+                {
+                    displayMessage("Token is niet ingesteld. Log in.");
+                }
+            }
+        });
+    }
+
+    private void registerUser(String newUsername, String newPassword)
+    {
+        // Deze moeten final zijn.
+        final String username = newUsername;
+        final String password = newPassword;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
-                new Response.Listener<String>() {
+                new Response.Listener<String>()
+                {
                     @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this,response, Toast.LENGTH_LONG).show();
+                    public void onResponse(String response)
+                    {
+                        displayMessage(response);
                     }
                 },
-                new Response.ErrorListener() {
+
+                // Error handling.
+                new Response.ErrorListener()
+                {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        handleErrorResponse(error);
                     }
-                }){
-                @Override
-                protected Map<String, String> getParams(){
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put(KEY_USERNAME, username);
-                    params.put(KEY_PASSWORD, password);
-                    return params;
-                }
-        };
+                })
+
+                {
+                    @Override
+                    protected Map<String, String> getParams()
+                    {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put(KEY_USERNAME, username);
+                        params.put(KEY_PASSWORD, password);
+                        return params;
+                    }
+                };
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
 
-    private void handleLogin(String username, String password){
+    private void handleLogin(String newUsername, String newPassword)
+    {
+        // Deze moeten final zijn.
+        final String username = newUsername;
+        final String password = newPassword;
 
-        String body = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
-        Log.i("MainActivity", "handleLogin - body =" + body);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        try
+                        {
+                            // Van String naar JSON naar String.
+                            JSONObject newToken = new JSONObject(response);
+                            token = newToken.getString("token");
 
-        try {
-            displayMessage("ik ben in de try");
-            JSONObject jsonBody = new JSONObject(body);
-            JsonObjectRequest jsObjectRequest = new JsonObjectRequest(Request.Method.POST, LOGIN_URL, jsonBody, new Response.Listener<JSONObject>(){
+                            /*
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            //}*/
 
-                @Override
-                public void onResponse(JSONObject response) {
-                        displayMessage("Succesvol ingelogd.");
-                    try {
-                        displayMessage("Succesvol ingelogd.");
-                        String token = response.getString("token");
+                        }
 
-                        Context context = getApplicationContext();
-                        SharedPreferences sharedPref = context.getSharedPreferences(
-                                "com.example.thijs.videoapp.SHARED_PREFS_FILE", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("saved_token", token);
-                        editor.commit();
+                        // Exception.
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                            displayMessage(e.toString());
+                        }
 
-                        //todo
-                        // Open nieuwe activity
-
-                    } catch (JSONException e){
-                        Log.e("MAIN", e.getMessage());
+                        displayMessage("[Ingelogd] - Token ontvangen! " + token);
                     }
-                }
-            }, new Response.ErrorListener() {
+                },
 
+                // Error handling.
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        handleErrorResponse(error);
+                    }
+                })
+            {
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    handleErrorResponse(error);
+                protected Map<String, String> getParams()
+                {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put(KEY_USERNAME, username);
+                    params.put(KEY_PASSWORD, password);
+                    return params;
                 }
-            });
+            };
 
-        jsObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                1500,
-                2,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        } catch (JSONException e) {
-            Log.e("Main", e.getMessage());
-        }
-        return;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
-    // Handel Volley errors op de juuiste manier af.
-
-    public void handleErrorResponse(VolleyError error) {
+    // Handel Volley errors op de juiste manier af.
+    public void handleErrorResponse(VolleyError error)
+    {
         Log.e("MAIN", "handleErrorResponse");
 
-        if(error instanceof com.android.volley.AuthFailureError) {
+        if(error instanceof com.android.volley.AuthFailureError)
+        {
             String json = null;
             NetworkResponse response = error.networkResponse;
-            if(response != null && response.data != null) {
+            if(response != null && response.data != null)
+            {
                 json = new String(response.data);
                 json = trimMessage(json, "error");
-                if (json != null) {
+                if (json != null)
+                {
                     json = "Error " + response.statusCode + ": " + json;
                     displayMessage(json);
                 }
-            } else {
+            }
+
+            else
+            {
                 Log.e("Main", "handleErrorResponse: kon geen networkResponse vinden.");
             }
-        } else if(error instanceof com.android.volley.NoConnectionError) {
+        }
+
+        else if(error instanceof com.android.volley.NoConnectionError)
+        {
             Log.e("MAIN", "handleErrorResponse: server was niet bereikbaar");
-        } else {
+        }
+
+        else
+        {
             Log.e("MAIN", "handleErrorResponse: error = " + error);
         }
     }
 
-
-    public String trimMessage(String json, String key){
+    // Message trimming.
+    public String trimMessage(String json, String key)
+    {
         Log.i("MAIN", "trimMessage: json = " + json);
         String trimmedString = null;
 
@@ -193,7 +262,9 @@ public class MainActivity extends AppCompatActivity {
         return trimmedString;
     }
 
-    public void displayMessage(String toastString) {
+    // Makkelijker om berichten te weergeven in-app.
+    public void displayMessage(String toastString)
+    {
         Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_LONG).show();
     }
 }
