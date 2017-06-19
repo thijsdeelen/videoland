@@ -4,7 +4,7 @@
   "description": "Geweldige applicatie minimaal een 11 verdiend.",
   "main": "server.js",
   "scripts": {
-    "test": "node videoserver/node_modules/mocha/bin/_mocha videoserver/test/test.js --reporter spec",
+    "test": "node videoserver/node_modules/mocha/bin/mocha videoserver/test/test.js --reporter spec",
     "sonar": "gulp sonarqube",
     "start": "nodemon videoserver/server.js"
   },
