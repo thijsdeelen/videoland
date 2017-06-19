@@ -19,6 +19,7 @@
     "jwt-simple": "^0.5.1",
     "mocha": "^3.4.2",
     "mysql": "^2.13.0",
-    "node-datetime": "^1.0.1"
+    "node-datetime": "^1.0.1",
+    "url": "^0.11.0"
   }
 }

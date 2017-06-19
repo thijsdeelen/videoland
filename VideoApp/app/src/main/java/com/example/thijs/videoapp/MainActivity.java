@@ -1,5 +1,6 @@
 package com.example.thijs.videoapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText editTextPassword;
 
     private Button buttonRegister;
+    private Button buttonLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
+        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+
         buttonRegister.setOnClickListener(this);
+        buttonLogin.setOnClickListener(this);
     }
 
     private void registerUser(){
@@ -75,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         if(v == buttonRegister){
             registerUser();
+        }
+        if(v == buttonLogin){
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 }

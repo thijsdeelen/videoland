@@ -4,6 +4,7 @@ var router 			= express.Router();
 var jwt 			= require('jsonwebtoken');
 var connection 		= require('../config/connector.js');
 var authenticator 	= require('../config/authenticator.js');
+var url = require('url');
 
 // CRUD!
 router.get('/create', function(request, response){
@@ -40,6 +41,28 @@ router.get('/films/:id', function(request, response){
 			console.log("[READ] - Film with rentals selected on id.");
 		}
 		response.send(results);
+	});
+});
+
+
+// Alle films ophalen uit de db. Kunnen beperkt worden met offset & count.
+router.get('/film', function(request, response){
+	var params = url.parse(request.url, true).query;
+	var offset = parseInt(params.offset);
+	var count = parseInt(params.count);
+
+	connection.query('SELECT * FROM film ORDER BY film_id ASC LIMIT ' + offset + ", " + count, function (error, results, fields){
+		if (error) {
+			console.log(error, results);
+			response.send({
+					"Code":400,
+					"Failed":"Error occurred"
+			})
+			console.log(offset, count);
+		}else{
+			response.json(results);
+			console.log(offset, count);
+		}
 	});
 });
 
