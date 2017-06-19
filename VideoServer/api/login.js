@@ -32,7 +32,7 @@ router.post('/login', function(request, response) {
 
             console.log("[TOKEN RECEIVED]")
         }}
-        catch(error)
+        catch(err)
         {
           console.log("[FOUTE LOGIN, GEEN TOKEN]")
           response.status(401).json({ "error": "Inlog gegevens kloppen niet." })
