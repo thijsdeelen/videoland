@@ -18,11 +18,14 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(jwt({
     secret: process.env.TOPSECRET
 }).unless({
-    path: [
+    path: 
+    [
+    	{ url: '/', methods: ['GET'] },
         { url: '/api/login', methods: ['POST'] },
         { url: '/api/register', methods: ['POST'] },
-        { url: '/api/films', methods: ['GET'] },
-        { url: '/about', methods: ['GET'] },
+        { url: '/api/film', methods: ['GET'] },
+        { url: '/api/films/5', methods: ['GET'] }, //Kan geen variabele instellen voor JWT.
+        { url: '/about', methods: ['GET'] }
     ]
 }));
 
