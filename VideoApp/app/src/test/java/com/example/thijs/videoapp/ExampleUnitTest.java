@@ -1,4 +1,4 @@
-package com.example.bram.videoapp;
+package com.example.thijs.videoapp;
 
 import org.junit.Test;
 
