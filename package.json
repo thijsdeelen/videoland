@@ -4,12 +4,27 @@
   "description": "Geweldige applicatie minimaal een 11 verdiend.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node videoserver/server.js"
+    "test": "node videoserver/node_modules/mocha/bin/mocha videoserver/test/test.js --reporter spec",
+    "sonar": "gulp sonarqube",
+    "start": "nodemon videoserver/server.js"
   },
   "author": "Thijs Deelen & Bram van de Griend",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.15.3"
+    "body-parser": "^1.17.2",
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "express": "^4.15.3",
+    "express-jwt": "^5.3.0",
+    "gulp": "^3.9.1",
+    "jsonwebtoken": "^7.4.1",
+    "jwt-simple": "^0.5.1",
+    "mocha": "^3.4.2",
+    "mysql": "^2.13.0",
+    "node-datetime": "^1.0.1",
+    "nodemon": "^1.11.0",
+    "request": "^2.81.0",
+    "sonarqube-scanner": "^1.2.0",
+    "url": "^0.11.0"
   }
 }

@@ -1,4 +1,4 @@
-package com.example.bram.videoapp;
+package com.example.thijs.videoapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.bram.videoapp", appContext.getPackageName());
+        assertEquals("com.example.thijs.videoapp", appContext.getPackageName());
     }
 }
