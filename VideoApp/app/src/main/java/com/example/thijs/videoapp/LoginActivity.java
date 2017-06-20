@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity
     private Button buttonLogin;
     private Button buttonToken;
 
+    private Button buttonOffset;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonToken = (Button) findViewById(R.id.buttonToken);
 
-
+        buttonOffset = (Button) findViewById(R.id.buttonOffset);
 
         // Registreren.
         buttonRegister.setOnClickListener(new View.OnClickListener()
@@ -109,6 +111,18 @@ public class LoginActivity extends AppCompatActivity
                 {
                     displayMessage("Token is niet ingesteld. Log in.");
                 }
+            }
+        });
+
+        // API call zonder authorizatie token.
+        buttonOffset.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Nieuw venster.
+                Intent intent = new Intent(getApplicationContext(), OffsetActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -42,4 +42,10 @@
         android:layout_height="wrap_content"
         android:text="Show token"
         android:id="@+id/buttonToken" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Offset Call"
+        android:id="@+id/buttonOffset" />
 </LinearLayout>
