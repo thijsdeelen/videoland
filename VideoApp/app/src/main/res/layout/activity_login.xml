@@ -48,4 +48,10 @@
         android:layout_height="wrap_content"
         android:text="Offset Call"
         android:id="@+id/buttonOffset" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Id Call"
+        android:id="@+id/buttonId" />
 </LinearLayout>
